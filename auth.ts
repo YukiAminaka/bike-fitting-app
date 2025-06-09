@@ -1,5 +1,7 @@
 import NextAuth, { NextAuthConfig } from "next-auth";
 import GitHub from "next-auth/providers/github";
+import { PrismaAdapter } from "@auth/prisma-adapter";
+import { prisma } from "@/prisma";
 
 //configはNextAuth()関数で使う
 export const config: NextAuthConfig = {
@@ -7,6 +9,7 @@ export const config: NextAuthConfig = {
   theme: {
     logo: "https://next-auth.js.org/img/logo/logo-sm.png",
   },
+  adapter: PrismaAdapter(prisma),
   providers: [GitHub], //どのプロバイダーで認証するか
   basePath: "/api/auth", //apiのパス,エンドポイント
   callbacks: {
