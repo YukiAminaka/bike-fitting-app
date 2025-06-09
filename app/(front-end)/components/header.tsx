@@ -1,4 +1,5 @@
 import {
+  Link,
   NavigationMenu,
   NavigationMenuContent,
   NavigationMenuItem,
@@ -7,6 +8,7 @@ import {
   NavigationMenuTrigger,
 } from "@radix-ui/react-navigation-menu";
 import UserButton from "./user-button";
+import { navigationMenuTriggerStyle } from "@/components/ui/navigation-menu";
 
 export default function Header() {
   return (
@@ -15,10 +17,18 @@ export default function Header() {
         <NavigationMenu>
           <NavigationMenuList>
             <NavigationMenuItem>
-              <NavigationMenuTrigger>Item One</NavigationMenuTrigger>
-              <NavigationMenuContent>
-                <NavigationMenuLink>Link</NavigationMenuLink>
-              </NavigationMenuContent>
+              <NavigationMenuLink
+                asChild
+                className={navigationMenuTriggerStyle()}
+              >
+                <Link href="/">HOME</Link>
+              </NavigationMenuLink>
+              <NavigationMenuLink
+                asChild
+                className={navigationMenuTriggerStyle()}
+              >
+                <Link href="/dashboard">BIKE FITTING</Link>
+              </NavigationMenuLink>
             </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>
