@@ -1,6 +1,7 @@
 import React from "react";
 
 import { auth } from "@/auth";
+import { UploadForm } from "../components/UploadForm";
 
 export default async function Page() {
   const session = await auth();
@@ -9,6 +10,7 @@ export default async function Page() {
   return (
     <div>
       <pre>{JSON.stringify(session, null, 2)}</pre>
+      <UploadForm />
     </div>
   );
 }
