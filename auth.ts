@@ -1,7 +1,7 @@
 import NextAuth, { NextAuthConfig } from "next-auth";
 import GitHub from "next-auth/providers/github";
 import { PrismaAdapter } from "@auth/prisma-adapter";
-import { prisma } from "@/prisma";
+import prisma from "@/lib/prisma";
 
 //configはNextAuth()関数で使う
 export const config: NextAuthConfig = {
