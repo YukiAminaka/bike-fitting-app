@@ -24,6 +24,7 @@ model User {
   sessions      Session[]
   // Optional for WebAuthn support
   Authenticator Authenticator[]
+  videos        Video[]
  
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -82,4 +83,22 @@ model Authenticator {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
  
   @@id([userId, credentialID])
+}
+
+model Video {
+  id        String   @id @default(cuid())
+  userId    String
+  filePath  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+generator markdown {
+  provider = "prisma-markdown"
+  output   = "./ERD.md"
+  title    = "ER図"
 }

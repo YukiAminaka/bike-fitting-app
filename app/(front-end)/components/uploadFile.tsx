@@ -1,19 +1,50 @@
-"use server";
-import { promises as fs } from "node:fs";
-import { resolve } from "node:path";
-import { revalidatePath } from "next/cache";
-
 export async function uploadFile(formData: FormData) {
   const file = formData.get("file") as File;
-  if (file && file.size > 0) {
-    const data = await file.arrayBuffer();
-    const buffer = Buffer.from(data);
-    const filePath = resolve(
-      process.cwd(),
-      "./uploads",
-      `${crypto.randomUUID()}.${file.name.split(".").pop()}`
-    );
-    await fs.writeFile(filePath, new Uint8Array(buffer));
+  if (!file || file.size === 0) {
+    throw new Error("No file uploaded or file is empty");
   }
-  revalidatePath("/file");
+
+  const filePath = file.webkitRelativePath || file.name;
+  // 1. サーバーから署名付きURLを取得
+  const response = await fetch("/api/video/presigned_url", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      filePath: filePath,
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to get presigned URL");
+  }
+
+  const { url } = await response.json();
+
+  if (!url) {
+    throw new Error("Failed to get presigned URL");
+  }
+
+  // 2. 署名付きURLにPUTリクエストでファイルアップロード
+  // todo: s3へのアップロードはフロントエンドで行う
+  const uploadResponse = await fetch(url, {
+    method: "PUT",
+    headers: { "Content-Type": file.type },
+    body: file,
+  });
+
+  if (!uploadResponse.ok) {
+    throw new Error("Failed to upload file to S3");
+  } else {
+    // 3. アップロード成功後にvideoを作成
+    const response = await fetch("/api/video", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        filePath: filePath,
+      }),
+    });
+    if (!response.ok) {
+      throw new Error("Failed to create video record");
+    }
+  }
 }
