@@ -32,6 +32,12 @@ export const config: NextAuthConfig = {
       }
       return token;
     },
+    // async session({ session, user }) {
+    //   // Send properties to the client, like an access_token and user id from a provider.
+    //   session.user.id = user.id; //セッションにユーザーIDを追加
+
+    //   return session;
+    // },
   },
 };
 
