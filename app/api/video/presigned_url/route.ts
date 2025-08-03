@@ -82,7 +82,7 @@ export const POST = auth(async (request: NextAuthRequest) => {
 
     const presignedUrl = await createPostPresignedUrl({
       bucket: process.env.AWS_S3_VIDEO_BUCKET!,
-      key: `users/${request.auth?.user?.id}/${uniqueFileName}`,
+      key: `users/${request.auth?.user?.id}/uploads/${uniqueFileName}`,
     });
 
     return new NextResponse(

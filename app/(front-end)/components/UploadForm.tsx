@@ -59,7 +59,7 @@ export function UploadForm() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          filePath: fileName || file.name,
+          filePath: fileName,
         }),
       });
 

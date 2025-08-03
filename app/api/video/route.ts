@@ -4,6 +4,20 @@ import { videoSchema } from "@/schema/schema";
 import { NextAuthRequest } from "next-auth";
 import { NextResponse } from "next/server";
 
+export const GET = auth(async (request: NextAuthRequest) => {
+  const userId = request.auth?.user?.id;
+  if (!userId) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const videos = await prisma.video.findMany({
+    where: { userId },
+    orderBy: { createdAt: "desc" },
+  });
+
+  return NextResponse.json(videos);
+});
+
 export const POST = auth(async (request: NextAuthRequest) => {
   try {
     const userId = request.auth?.user?.id;
