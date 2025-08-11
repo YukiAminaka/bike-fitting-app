@@ -19,10 +19,11 @@ export const GET = auth(async (request: NextAuthRequest) => {
 
     Object.entries(cookies).forEach(([name, value]) => {
       res.cookies.set(name, value, {
+        domain: ".ami-works.com", // CloudFrontのドメインに合わせる
         httpOnly: true,
         secure: true,
         path: "/", // CloudFront URL に合致するように設定
-        sameSite: "strict",
+        sameSite: "none",
       });
     });
 

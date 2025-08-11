@@ -6,6 +6,7 @@
     "fastapi-dev": "pip3 install -r requirements.txt && python3 -m uvicorn api.index:app --reload",
     "next-dev": "next dev",
     "dev": "concurrently \"npm run next-dev\" \"npm run fastapi-dev\"",
+    "dev:https": "next dev --experimental-https --experimental-https-key ./certificates/key.pem --experimental-https-cert ./certificates/cert.pem -p 3000 -H local.ami-works.com",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -31,6 +32,7 @@
     "concurrently": "^9.0.1",
     "eslint": "8.41.0",
     "eslint-config-next": "13.4.4",
+    "hls.js": "^1.6.7",
     "lucide-react": "^0.513.0",
     "next": "^15.3.3",
     "next-auth": "^5.0.0-beta.28",
