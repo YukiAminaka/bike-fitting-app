@@ -3,6 +3,21 @@ import prisma from "@/lib/prisma";
 import { videoSchema } from "@/schema/schema";
 import { NextAuthRequest } from "next-auth";
 import { NextResponse } from "next/server";
+import path from "path";
+
+export const GET = auth(async (request: NextAuthRequest) => {
+  const userId = request.auth?.user?.id;
+  if (!userId) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const videos = await prisma.video.findMany({
+    where: { userId },
+    orderBy: { createdAt: "desc" },
+  });
+
+  return NextResponse.json(videos);
+});
 
 export const POST = auth(async (request: NextAuthRequest) => {
   try {
@@ -34,9 +49,21 @@ export const POST = auth(async (request: NextAuthRequest) => {
 
     const { filePath } = parsedBody.data;
 
+    if (!filePath) {
+      return new NextResponse(
+        JSON.stringify({ error: "File path is required" }),
+        {
+          status: 400,
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+    }
+    // 拡張子を除いたファイル名を取得
+    const nameWithoutExt = path.parse(filePath).name;
+
     const video = await prisma.video.create({
       data: {
-        filePath: filePath,
+        filePath: nameWithoutExt,
         userId: userId,
       },
     });
