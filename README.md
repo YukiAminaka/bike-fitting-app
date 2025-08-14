@@ -8,6 +8,27 @@ mediapipeを用いてランドマークを検出し、各部位の角度を数�
 - パーツを変更し見直した際のバイクのポジション
 - バイクフィッティングを受けたときのポジション
 
+## 開発環境構築
+パッケージのインストール
+```
+npm install
+```
+マイグレーションの実行
+```
+prisma migrate dev
+```
+mkcertでssl証明書発行
+```
+mkcert -install
+export MKCERT_VALIDITY=3650 && mkcert -key-file certificates/key.pem -cert-file certificates/cert.pem local.ami-works.com localhost 127.0.0.1 ::1
+```
+/etc/hostsに追記
+```
+# macOS / Linux
+sudo sh -c 'echo "127.0.0.1 local.ami-works.com" >> /etc/hosts'
+
+```
+
 ## 開発サーバーの起動方法
 ```
 npm run dev:https
