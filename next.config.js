@@ -1,29 +1,37 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  rewrites: async () => {
+  async headers() {
     return [
       {
-        source: "/api/py/:path*",
-        destination:
-          process.env.NODE_ENV === "development"
-            ? "http://127.0.0.1:8000/api/py/:path*"
-            : "/api/",
-      },
-      {
-        source: "/docs",
-        destination:
-          process.env.NODE_ENV === "development"
-            ? "http://127.0.0.1:8000/api/py/docs"
-            : "/api/py/docs",
-      },
-      {
-        source: "/openapi.json",
-        destination:
-          process.env.NODE_ENV === "development"
-            ? "http://127.0.0.1:8000/api/py/openapi.json"
-            : "/api/py/openapi.json",
+        source: "/(.*)",
+        headers: [
+          {
+            key: "X-Content-Type-Options",
+            value: "nosniff",
+          },
+          {
+            key: "Strict-Transport-Security",
+            value: "max-age=63072000; includeSubDomains; preload",
+          },
+          {
+            key: "X-Frame-Options",
+            value: "SAMEORIGIN",
+          },
+          {
+            key: "Referrer-Policy",
+            value: "strict-origin-when-cross-origin",
+          },
+        ],
       },
     ];
+  },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "avatars.githubusercontent.com",
+      },
+    ],
   },
 };
 
