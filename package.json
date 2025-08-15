@@ -8,6 +8,7 @@
     "dev": "concurrently \"npm run next-dev\" \"npm run fastapi-dev\"",
     "dev:https": "next dev --experimental-https --experimental-https-key ./certificates/key.pem --experimental-https-cert ./certificates/cert.pem -p 3000 -H local.ami-works.com",
     "build": "next build",
+    "check-types": "tsc --pretty --noEmit",
     "start": "next start",
     "lint": "next lint"
   },
