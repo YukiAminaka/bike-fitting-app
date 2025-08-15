@@ -1,0 +1,28 @@
+version: 2
+updates:
+  - package-ecosystem: "github-actions" # GitHub Actionsの更新チェック
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      time: "01:00" # 更新が行われる時間 (UTC)
+      day: "saturday"
+    groups:
+      dependencies:
+        patterns:
+          - "*" # 全てのアップデートをひとまとめにする
+
+  - package-ecosystem: "npm" # npmの更新チェック
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      time: "01:00"
+      day: "saturday"
+    groups:
+      dependencies:
+        patterns:
+          - "*"
+    ignore:
+      - dependency-name: "@aws-sdk/*"
+        versions: [">= 3.729.0"] # v3.729.0でバグが混入したため除外 https://github.com/aws/aws-sdk-js-v3/issues/6834
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"] # メジャーアップデートは無視する

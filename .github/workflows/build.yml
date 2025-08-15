@@ -1,0 +1,32 @@
+name: Build Test
+on: pull_request
+
+# 同じブランチでワークフローが重複して実行されたとき、古いワークフローを自動キャンセルする
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - uses: actions/cache@v4
+        with:
+          path: "**/node_modules"
+          key: node_modules-${{ hashFiles('package-lock.json') }}
+
+      - run: npm install
+      - run: npx prisma generate
+
+      # *.test.ts, *.spec.tsの型チェックがbuildでは行われないため追加：https://github.com/vercel/next.js/issues/56333
+      - run: npm run check-types
+
+      # ビルドが通るかのテスト
+      - run: npm run build
