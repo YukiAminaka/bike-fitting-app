@@ -8,6 +8,16 @@ mediapipeを用いてランドマークを検出し、各部位の角度を数�
 - パーツを変更し見直した際のバイクのポジション
 - バイクフィッティングを受けたときのポジション
 
+今後サドルやハンドルの位置のレコメンド機能の実装を計画しています。
+
+### Image
+<img width="1920" height="909" alt="image" src="https://github.com/user-attachments/assets/c37c6fd6-1d3c-4974-9147-69c8747c8741" />
+
+
+
+![1754578654414_sample](https://github.com/user-attachments/assets/551cbafb-d2e1-4a22-aca0-eaf34ef67799)
+
+
 ## 開発環境構築
 パッケージのインストール
 ```
